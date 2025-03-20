@@ -1,0 +1,6 @@
+<Solution>
+    <Project Path="src\AppHost\AppHost.csproj" />
+    <Project Path="src\ServiceDefaults\ServiceDefaults.csproj" />
+    <Project Path="src\hangy.Testcontainers.AzureApplicationInsights\hangy.Testcontainers.AzureApplicationInsights.csproj" />
+    <Project Path="src\hangy.Testcontainers.AzureApplicationInsights.Server\hangy.Testcontainers.AzureApplicationInsights.Server.csproj" />
+</Solution>

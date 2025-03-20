@@ -1,0 +1,6 @@
+@hangy.Testcontainers.AzureApplicationInsights_HostAddress = http://localhost:5033
+
+GET {{hangy.Testcontainers.AzureApplicationInsights_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
