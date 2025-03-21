@@ -1,4 +1,4 @@
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
@@ -6,7 +6,7 @@ builder.AddServiceDefaults();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -16,9 +16,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapPost("/v2/track", static (HttpRequest request) =>
+app.MapPost("/v2.1/track", async (HttpRequest request, CancellationToken cancellationToken) =>
 {
-    return Results.Stream(request.Body, contentType: request.ContentType);
+    using StreamReader reader = new(request.Body);
+    string body = await reader.ReadToEndAsync(cancellationToken).ConfigureAwait(false);
+    app.Logger.LogDebug("Received telemetry: {Telemetry}", body);
+    return Results.NoContent();
 })
 .WithName("TrackApplicationInsights");
 

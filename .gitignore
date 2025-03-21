@@ -364,3 +364,7 @@ src/coreclr/System.Private.CoreLib/common
 .dotnet-daily/
 run-stress-*
 test:.cs
+
+# I want to try using only .slnx here, but as of now, vscode doesn't support slnx properly
+hangy.Testcontainers.AzureApplicationInsights.sln
+

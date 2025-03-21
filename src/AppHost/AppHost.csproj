@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\hangy.Testcontainers.AzureApplicationInsights.Server\hangy.Testcontainers.AzureApplicationInsights.Server.csproj" />
+    <ProjectReference Include="..\hangy.Testcontainers.AzureApplicationInsights.TestClient\hangy.Testcontainers.AzureApplicationInsights.TestClient.csproj" />
   </ItemGroup>
 
 </Project>
