@@ -7,7 +7,6 @@
   <ItemGroup>
     <PackageVersion Include="Aspire.Hosting.AppHost" Version="9.1.0" />
     <PackageVersion Include="Azure.Monitor.OpenTelemetry.AspNetCore" Version="1.2.0" />
-    <PackageVersion Include="DuckDB.NET.Data.Full" Version="1.2.1" />
     <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="9.0.3" />
     <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="9.3.0" />
     <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="9.1.0" />
