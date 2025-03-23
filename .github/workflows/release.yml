@@ -72,13 +72,19 @@ jobs:
         run: npm audit signatures
       - name: Build linux-x64 container
         id: build-linux-x64
-        run: echo "HASH=$(dotnet publish --no-restore --os linux --arch x64 /t:PublishContainer --getProperty:GeneratedContainerDigest src/hangy.Testcontainers.AzureApplicationInsights.Server/hangy.Testcontainers.AzureApplicationInsights.Server.csproj)" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "HASH=$(dotnet publish --no-restore --os linux --arch x64 /t:PublishContainer --getProperty:GeneratedContainerDigest src/hangy.Testcontainers.AzureApplicationInsights.Server/hangy.Testcontainers.AzureApplicationInsights.Server.csproj)" >> "$GITHUB_OUTPUT"
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}:"$HASH"
       - name: Build linux-arm container
         id: build-linux-arm
-        run: echo "HASH=$(dotnet publish --no-restore --os linux --arch arm /t:PublishContainer --getProperty:GeneratedContainerDigest src/hangy.Testcontainers.AzureApplicationInsights.Server/hangy.Testcontainers.AzureApplicationInsights.Server.csproj)" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "HASH=$(dotnet publish --no-restore --os linux --arch arm /t:PublishContainer --getProperty:GeneratedContainerDigest src/hangy.Testcontainers.AzureApplicationInsights.Server/hangy.Testcontainers.AzureApplicationInsights.Server.csproj)" >> "$GITHUB_OUTPUT"
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}:"$HASH"
       - name: Build linux-arm64 container
         id: build-linux-arm64
-        run: echo "HASH=$(dotnet publish --no-restore --os linux --arch arm64 /t:PublishContainer --getProperty:GeneratedContainerDigest src/hangy.Testcontainers.AzureApplicationInsights.Server/hangy.Testcontainers.AzureApplicationInsights.Server.csproj)" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "HASH=$(dotnet publish --no-restore --os linux --arch arm64 /t:PublishContainer --getProperty:GeneratedContainerDigest src/hangy.Testcontainers.AzureApplicationInsights.Server/hangy.Testcontainers.AzureApplicationInsights.Server.csproj)" >> "$GITHUB_OUTPUT"
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}:"$HASH"
       - name: Generate artifact attestation linux-x64
         uses: actions/attest-build-provenance@v2
         with:
@@ -99,7 +105,7 @@ jobs:
           push-to-registry: false
       - name: Create manifest list and push
         run: |
-          docker buildx imagetools create --dry-run $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
+          docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ steps.build-linux-x64.outputs.HASH }} \
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ steps.build-linux-arm.outputs.HASH }} \
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ steps.build-linux-arm64.outputs.HASH }}
