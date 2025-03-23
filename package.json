@@ -32,7 +32,7 @@
             [
                 "@semantic-release/exec",
                 {
-                  "prepareCmd": "./prepare.sh"
+                    "prepareCmd": "./prepare.sh"
                 }
             ],
             "@droidsolutions-oss/semantic-release-nuget",
@@ -74,5 +74,5 @@
             }
         ]
     },
-    "version": "0.0.1"
+    "version": "1.0.0-ci.1"
 }

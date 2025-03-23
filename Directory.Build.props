@@ -19,8 +19,8 @@
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryBranch>main</RepositoryBranch>
-    <RepositoryCommit></RepositoryCommit>
-    <Version>0.0.1</Version>
+    <RepositoryCommit>7201b9d54561873125ff50e0ee19a72dbee79f2e</RepositoryCommit>
+    <Version>1.0.0-ci.1</Version>
   </PropertyGroup>
 
 </Project>
