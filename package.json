@@ -5,6 +5,7 @@
         "@droidsolutions-oss/semantic-release-nuget": "^2.0.1",
         "@droidsolutions-oss/semantic-release-update-file": "^1.4.0",
         "@semantic-release/changelog": "^6.0.3",
+        "@semantic-release/exec": "^7.0.3",
         "@semantic-release/git": "^10.0.1",
         "semantic-release": "^24.2.3"
     },
@@ -19,7 +20,7 @@
                 "prerelease": true
             },
             {
-                "name": "alpha",
+                "name": "ci",
                 "prerelease": true
             }
         ],
@@ -28,6 +29,12 @@
             "@semantic-release/release-notes-generator",
             "@droidsolutions-oss/semantic-release-update-file",
             "@semantic-release/npm",
+            [
+                "@semantic-release/exec",
+                {
+                    "prepareCmd": "./prepare.sh"
+                }
+            ],
             "@droidsolutions-oss/semantic-release-nuget",
             [
                 "@semantic-release/git",
@@ -67,5 +74,5 @@
             }
         ]
     },
-    "version": "0.0.1"
+    "version": "1.0.0-ci.1"
 }

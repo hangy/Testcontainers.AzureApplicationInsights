@@ -523,6 +523,8 @@
         }
       }
     },
+    "net9.0/linux-arm": {},
+    "net9.0/linux-arm64": {},
     "net9.0/linux-x64": {}
   }
 }
