@@ -74,6 +74,7 @@ jobs:
         id: build-linux-x64
         run: |
           echo "HASH=$(dotnet publish --no-restore --os linux --arch x64 /t:PublishContainer --getProperty:GeneratedContainerDigest src/hangy.Testcontainers.AzureApplicationInsights.Server/hangy.Testcontainers.AzureApplicationInsights.Server.csproj)" >> "$GITHUB_OUTPUT"
+          source "$GITHUB_OUTPUT"
           echo docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}@"$HASH"
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}@"$HASH"
       - name: Build linux-arm container
