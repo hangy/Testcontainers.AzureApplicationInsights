@@ -51,7 +51,7 @@ public class AppInsightsBuilder : ContainerBuilder<AppInsightsBuilder, AppInsigh
             .WithImage(AppInsightsImage)
             .WithPortBinding(AppInsightsPort, true)
             .WithWaitStrategy(Wait.ForUnixContainer().UntilHttpRequestIsSucceeded(request => request
-                .WithMethod(HttpMethod.Post)
+                .WithMethod(HttpMethod.Get)
                 .ForPort(AppInsightsPort)
                 .ForPath("/health")));
     }

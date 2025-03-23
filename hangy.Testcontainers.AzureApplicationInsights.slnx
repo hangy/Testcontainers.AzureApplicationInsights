@@ -4,4 +4,5 @@
     <Project Path="src\hangy.Testcontainers.AzureApplicationInsights\hangy.Testcontainers.AzureApplicationInsights.csproj" />
     <Project Path="src\hangy.Testcontainers.AzureApplicationInsights.Server\hangy.Testcontainers.AzureApplicationInsights.Server.csproj" />
     <Project Path="src\hangy.Testcontainers.AzureApplicationInsights.TestClient\hangy.Testcontainers.AzureApplicationInsights.TestClient.csproj" />
+    <Project Path="test\hangy.Testcontainers.AzureApplicationInsights.Test\hangy.Testcontainers.AzureApplicationInsights.Test.csproj" />
 </Solution>

@@ -19,8 +19,12 @@ public class AppInsightsContainer : DockerContainer
     /// </summary>
     /// <returns>The AppInsights connection string.</returns>
     public string GetConnectionString()
-    {
-        var endpoint = new UriBuilder(Uri.UriSchemeHttp, Hostname, GetMappedPublicPort(AppInsightsBuilder.AppInsightsPort));
-        return $"InstrumentationKey={Guid.NewGuid()};IngestionEndpoint={endpoint};ApplicationId=${Guid.NewGuid()}";
-    }
+        => $"InstrumentationKey={Guid.NewGuid()};IngestionEndpoint={GetApiUrl()};ApplicationId=${Guid.NewGuid()}";
+
+    /// <summary>
+    /// Gets the AppInsights API URL
+    /// </summary>
+    /// <returns>The AppInsights API URL.</returns>
+    public Uri GetApiUrl()
+        => new UriBuilder(Uri.UriSchemeHttp, Hostname, GetMappedPublicPort(AppInsightsBuilder.AppInsightsPort)).Uri;
 }
