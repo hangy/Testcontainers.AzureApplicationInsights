@@ -1,6 +1,4 @@
-using System.Text;
-using Microsoft.Extensions.Primitives;
-using Microsoft.OpenApi.Expressions;
+using AppInsightsJsonSerializer = Microsoft.ApplicationInsights.Extensibility.Implementation.JsonSerializer;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -34,39 +32,19 @@ async Task<IResult> TrackRequestAsync(HttpRequest request, TimeProvider timeProv
     }
 
     DateTimeOffset now = timeProvider.GetLocalNow();
-    Guid batchId = Guid.CreateVersion7();
+    Guid id = Guid.CreateVersion7();
 
-    request.EnableBuffering();
     using MemoryStream mem = new();
     await request.Body.CopyToAsync(mem, cancellationToken).ConfigureAwait(false);
-    request.Body.Seek(0, SeekOrigin.Begin);
+    string json = AppInsightsJsonSerializer.Deserialize(mem.ToArray());
+    app.Logger.LogInformation("JSON: {JsonBody}", json);
 
-    byte[] arr =  mem.ToArray();
-    app.Logger.LogInformation("B64: {Base64Body}", Convert.ToBase64String(arr));    
+    trackedRequests.Add(new TrackedRequest(id,
+        now,
+        request.Headers.ToDictionary(kvp => kvp.Key, kvp => (IList<string?>)[.. kvp.Value]),
+        json));
 
-    using StreamReader reader = new(request.Body, Encoding.UTF8);
-    List<string> lines = [];
-
-    string? line;
-    while ((line = await reader.ReadLineAsync(cancellationToken).ConfigureAwait(false)) is not null)
-    {
-        if (!string.IsNullOrWhiteSpace(line))
-        {
-            lines.Add(line);
-        }
-    }
-
-    foreach (string jsonLine in lines)
-    {
-        Guid id = Guid.CreateVersion7();
-        trackedRequests.Add(new TrackedRequest(batchId,
-            id,
-            now,
-            request.Headers.ToDictionary(kvp => kvp.Key, kvp => (IList<string>)[.. kvp.Value]),
-            jsonLine));
-
-        app.Logger.LogInformation("Tracked request with id {Id} batch {BatchId}", id, batchId);
-    }
+    app.Logger.LogInformation("Tracked request with id {Id}", id);
 
     return Results.NoContent();
 }
@@ -83,8 +61,7 @@ app.MapDefaultEndpoints();
 
 await app.RunAsync().ConfigureAwait(false);
 
-public record TrackedRequest(Guid batchId,
-    Guid Id,
+public record TrackedRequest(Guid Id,
     DateTimeOffset Timestamp,
-    IDictionary<string, IList<string>> Headers,
+    IDictionary<string, IList<string?>> Headers,
     string Body);
