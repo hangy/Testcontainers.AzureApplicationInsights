@@ -12,6 +12,12 @@ public class IntegrationTest
     public async Task Tracked_Event_Gets_Stored_And_Can_Be_Retrieved()
     {
         AppInsightsBuilder builder = new();
+        string? imageName = Environment.GetEnvironmentVariable("APPINSIGHTS_IMAGE");
+        if (!string.IsNullOrWhiteSpace(imageName))
+        {
+            builder = builder.WithImage(imageName);
+        }
+        
         AppInsightsContainer container = builder.Build();
 
         await container.StartAsync(TestContext.Current.CancellationToken);
