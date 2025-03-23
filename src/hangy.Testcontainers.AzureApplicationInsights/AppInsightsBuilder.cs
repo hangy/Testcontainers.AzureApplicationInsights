@@ -11,7 +11,7 @@ namespace hangy.Testcontainers.AzureApplicationInsights;
 /// </remarks>
 public class AppInsightsBuilder : ContainerBuilder<AppInsightsBuilder, AppInsightsContainer, AppInsightsConfiguration>
 {
-    public const string AppInsightsImage = "ghcr.io/hangy/azure-appinsights-emulator:main";
+    public const string AppInsightsImage = "ghcr.io/hangy/azure-appinsights-emulator:latest";
 
     public const ushort AppInsightsPort = 8080;
 
