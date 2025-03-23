@@ -93,19 +93,19 @@ jobs:
         with:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
           subject-digest: ${{ steps.build-linux-x64.outputs.HASH }}
-          push-to-registry: false
+          push-to-registry: true
       - name: Generate artifact attestation linux-arm
         uses: actions/attest-build-provenance@v2
         with:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
           subject-digest: ${{ steps.build-linux-arm.outputs.HASH }}
-          push-to-registry: false
+          push-to-registry: true
       - name: Generate artifact attestation linux-arm64
         uses: actions/attest-build-provenance@v2
         with:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
           subject-digest: ${{ steps.build-linux-arm64.outputs.HASH }}
-          push-to-registry: false
+          push-to-registry: true
       - name: Create manifest list and push
         run: |
           docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
