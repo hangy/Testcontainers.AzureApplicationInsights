@@ -11,8 +11,6 @@ namespace hangy.Testcontainers.AzureApplicationInsights;
 /// </remarks>
 public class AppInsightsBuilder : ContainerBuilder<AppInsightsBuilder, AppInsightsContainer, AppInsightsConfiguration>
 {
-    public const string AppInsightsImage = "ghcr.io/hangy/azure-appinsights-emulator:main";
-
     public const ushort AppInsightsPort = 8080;
 
     /// <summary>
@@ -33,6 +31,8 @@ public class AppInsightsBuilder : ContainerBuilder<AppInsightsBuilder, AppInsigh
     {
         DockerResourceConfiguration = resourceConfiguration;
     }
+
+    public string AppInsightsImage  { get; } = $"ghcr.io/hangy/azure-appinsights-emulator:{ThisAssembly.Info.Version}";
 
     /// <inheritdoc />
     protected override AppInsightsConfiguration DockerResourceConfiguration { get; }

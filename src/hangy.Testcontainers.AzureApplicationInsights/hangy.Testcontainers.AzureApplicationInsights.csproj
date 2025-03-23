@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <PackageReference Include="Testcontainers" />
+    <PackageReference Include="ThisAssembly.AssemblyInfo" />
   </ItemGroup>
 
 </Project>

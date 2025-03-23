@@ -15,6 +15,15 @@
           "SharpZipLib": "1.4.2"
         }
       },
+      "ThisAssembly.AssemblyInfo": {
+        "type": "Direct",
+        "requested": "[2.0.12, )",
+        "resolved": "2.0.12",
+        "contentHash": "3aDlrR2uxe5GbMaJBgpGoS/+4f5oQURZnKF75nPnf+gi9CBaOq4JkOeDGrUXqajn+lT+xG5hpmEvbiw8EZFFnA==",
+        "dependencies": {
+          "ThisAssembly.Constants": "2.0.12"
+        }
+      },
       "BouncyCastle.Cryptography": {
         "type": "Transitive",
         "resolved": "2.4.0",
@@ -32,6 +41,11 @@
         "dependencies": {
           "Docker.DotNet.Enhanced": "3.126.1"
         }
+      },
+      "Microsoft.CSharp": {
+        "type": "Transitive",
+        "resolved": "4.7.0",
+        "contentHash": "pTj+D3uJWyN3My70i2Hqo+OXixq3Os2D1nJ2x92FFo6sk8fYS1m1WLNTs0Dc1uPaViH0YvEEwvzddQ7y4rhXmA=="
       },
       "Microsoft.Extensions.DependencyInjection.Abstractions": {
         "type": "Transitive",
@@ -57,6 +71,20 @@
         "contentHash": "9r+4UF2P51lTztpd+H7SJywk7WgmlWB//Cm2o96c6uGVZU5r58ys2/cD9pCgTk0zCdSkfflWL1WtqQ9I4IVO9Q==",
         "dependencies": {
           "BouncyCastle.Cryptography": "2.4.0"
+        }
+      },
+      "System.Threading.Tasks.Extensions": {
+        "type": "Transitive",
+        "resolved": "4.5.4",
+        "contentHash": "zteT+G8xuGu6mS+mzDzYXbzS7rd3K6Fjb9RiZlYlJPam2/hU7JCBZBVEcywNuR+oZ1ncTvc/cq0faRr3P01OVg=="
+      },
+      "ThisAssembly.Constants": {
+        "type": "Transitive",
+        "resolved": "2.0.12",
+        "contentHash": "FAOxFdTrOUeVmylbGGzaOCgAnCLAAeFJsOYEwmDoXg8i3OZWVedk9GWACW1StiqWByPrgT+9l3P7wgivvrfXFA==",
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0",
+          "System.Threading.Tasks.Extensions": "4.5.4"
         }
       }
     },
