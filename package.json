@@ -32,8 +32,7 @@
             [
                 "@semantic-release/exec",
                 {
-                  "verifyConditionsCmd": "./verify.sh",
-                  "publishCmd": "./publish.sh ${nextRelease.version} ${branch.name} ${commits.length} ${Date.now()}"
+                  "prepareCmd": "./prepare.sh"
                 }
             ],
             "@droidsolutions-oss/semantic-release-nuget",
