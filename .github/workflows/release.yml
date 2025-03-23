@@ -63,11 +63,11 @@ jobs:
       - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
         run: npm audit signatures
       - name: Build linux-x64 container
-        run: dotnet publish --no-build --os linux --arch x64 /t:PublishContainer
+        run: dotnet publish --no-restore --os linux --arch x64 /t:PublishContainer
       - name: Build linux-arm container
-        run: dotnet publish --no-build --os linux --arch arm /t:PublishContainer
+        run: dotnet publish --no-restore --os linux --arch arm /t:PublishContainer
       - name: Build linux-arm64 container
-        run: dotnet publish --no-build --os linux --arch arm64 /t:PublishContainer
+        run: dotnet publish --no-restore --os linux --arch arm64 /t:PublishContainer
       - name: Print images
         run: docker image ls
       - name: Generate artifact attestation
