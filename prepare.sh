@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Run as semantic-release/exec's prepare step
+echo "HASH_x64=$(dotnet publish --no-restore --os linux --arch x64 /t:PublishContainer -p ContainerRegistry="$REGISTRY" -p ContainerRepository="$REPOSITORY" --getProperty:GeneratedContainerDigest src/hangy.Testcontainers.AzureApplicationInsights.Server/hangy.Testcontainers.AzureApplicationInsights.Server.csproj)" >> "$GITHUB_OUTPUT"
+echo "HASH_arm=$(dotnet publish --no-restore --os linux --arch arm /t:PublishContainer -p ContainerRegistry="$REGISTRY" -p ContainerRepository="$REPOSITORY" --getProperty:GeneratedContainerDigest src/hangy.Testcontainers.AzureApplicationInsights.Server/hangy.Testcontainers.AzureApplicationInsights.Server.csproj)" >> "$GITHUB_OUTPUT"
+echo "HASH_arm64=$(dotnet publish --no-restore --os linux --arch arm64 /t:PublishContainer -p ContainerRegistry="$REGISTRY" -p ContainerRepository="$REPOSITORY" --getProperty:GeneratedContainerDigest src/hangy.Testcontainers.AzureApplicationInsights.Server/hangy.Testcontainers.AzureApplicationInsights.Server.csproj)" >> "$GITHUB_OUTPUT"

@@ -6,7 +6,6 @@ on:
       - next
       - beta
       - "*.x"
-      - ci
   workflow_dispatch:
 
 permissions:
@@ -70,42 +69,39 @@ jobs:
         run: npm clean-install
       - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
         run: npm audit signatures
-      - name: Build linux-x64 container
-        id: build-linux-x64
-        run: |
-          echo "HASH=$(dotnet publish --no-restore --os linux --arch x64 /t:PublishContainer -p ContainerRegistry=${{ env.REGISTRY }} -p ContainerRepository=${{ env.IMAGE_NAME}} --getProperty:GeneratedContainerDigest src/hangy.Testcontainers.AzureApplicationInsights.Server/hangy.Testcontainers.AzureApplicationInsights.Server.csproj)" >> "$GITHUB_OUTPUT"
-      - name: Build linux-arm container
-        id: build-linux-arm
-        run: |
-          echo "HASH=$(dotnet publish --no-restore --os linux --arch arm /t:PublishContainer -p ContainerRegistry=${{ env.REGISTRY }} -p ContainerRepository=${{ env.IMAGE_NAME}} --getProperty:GeneratedContainerDigest src/hangy.Testcontainers.AzureApplicationInsights.Server/hangy.Testcontainers.AzureApplicationInsights.Server.csproj)" >> "$GITHUB_OUTPUT"
-      - name: Build linux-arm64 container
-        id: build-linux-arm64
-        run: |
-          echo "HASH=$(dotnet publish --no-restore --os linux --arch arm64 /t:PublishContainer -p ContainerRegistry=${{ env.REGISTRY }} -p ContainerRepository=${{ env.IMAGE_NAME}} --getProperty:GeneratedContainerDigest src/hangy.Testcontainers.AzureApplicationInsights.Server/hangy.Testcontainers.AzureApplicationInsights.Server.csproj)" >> "$GITHUB_OUTPUT"
+      - name: Release NuGet and build container images
+        id: release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NUGET_TOKEN: ${{ secrets.NUGET_ORG_API_KEY }}
+          CI_COMMIT_SHA: ${{ github.sha }}
+          REGISTRY: ${{ env.REGISTRY }}
+          REPOSITORY: ${{ env.IMAGE_NAME }}
+        run: npx semantic-release
       - name: Generate artifact attestation linux-x64
         uses: actions/attest-build-provenance@v2
         with:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
-          subject-digest: ${{ steps.build-linux-x64.outputs.HASH }}
+          subject-digest: ${{ steps.release.outputs.HASH_x64 }}
           push-to-registry: true
       - name: Generate artifact attestation linux-arm
         uses: actions/attest-build-provenance@v2
         with:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
-          subject-digest: ${{ steps.build-linux-arm.outputs.HASH }}
+          subject-digest: ${{ steps.release.outputs.HASH_arm }}
           push-to-registry: true
       - name: Generate artifact attestation linux-arm64
         uses: actions/attest-build-provenance@v2
         with:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
-          subject-digest: ${{ steps.build-linux-arm64.outputs.HASH }}
+          subject-digest: ${{ steps.release.outputs.HASH_arm64 }}
           push-to-registry: true
       - name: Create manifest list and push
         run: |
           docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ steps.build-linux-x64.outputs.HASH }} \
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ steps.build-linux-arm.outputs.HASH }} \
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ steps.build-linux-arm64.outputs.HASH }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ steps.release.outputs.HASH_x64 }} \
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ steps.release.outputs.HASH_arm }} \
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ steps.release.outputs.HASH_arm64 }}
       - name: Inspect image
         run: |
           docker buildx imagetools inspect ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.version }}
